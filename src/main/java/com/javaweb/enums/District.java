@@ -20,5 +20,11 @@ public enum District {
         }
         return districts;
     }
+    public static String getDistrictName(String district) {
+        if (district != null && !district.isEmpty()){
+            return District.valueOf(district).districtName;
+        }
+        return null;
+    }
 
 }

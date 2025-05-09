@@ -4,7 +4,7 @@ import com.javaweb.constant.SystemConstant;
 import com.javaweb.exception.MyException;
 import com.javaweb.model.dto.PasswordDTO;
 import com.javaweb.model.dto.UserDTO;
-import com.javaweb.service.IUserService;
+import com.javaweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserAPI {
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity<UserDTO> createUsers(@RequestBody UserDTO newUser) {

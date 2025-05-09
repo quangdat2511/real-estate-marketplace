@@ -47,7 +47,7 @@
                         <label class="col-xs-3 control-label" >Tên tòa nhà</label>
                         <div class="col-xs-9">
                             <form:input class="form-control" path="name"/>
-                            <span class="error-message" style="color:red" id="name"></span>
+                            <span class="error-message" style="color:red" id="nameError"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -57,7 +57,7 @@
                                 <form:option value="">---Chọn quận---</form:option>
                                 <form:options items="${district}"/>
                             </form:select>
-                            <span class="error-message" style="color:red" id="district"></span>
+                            <span class="error-message" style="color:red" id="districtError"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -106,7 +106,7 @@
                         <label class="col-xs-3 control-label" >Giá thuê</label>
                         <div class="col-xs-9">
                             <form:input class="form-control" path="rentPrice"/>
-                            <span class="error-message" style="color:red" id="rentPrice"></span>
+                            <span class="error-message" style="color:red" id="rentPriceError"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -207,22 +207,24 @@
                         <label class="col-xs-3 control-label">Diện tích thuê</label>
                         <div class="col-xs-9">
                             <form:input class="form-control" path="rentArea"/>
-                            <span class="error-message" style="color:red" id="rentArea"></span>
+                            <span class="error-message" style="color:red" id="rentAreaError"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-xs-3 control-label"></label>
                         <div class="col-xs-9">
-                            <c:if test="${not empty buildingEdit.id}">
-                                <button type="button" class="btn btn-warning" id="btnAddBuilding">
-                                    Cập nhật thông tin
-                                </button>
-                            </c:if>
-                            <c:if test="${empty buildingEdit.id}">
-                                <button type="button" class="btn btn-primary" id="btnAddBuilding">
-                                    Thêm tòa nhà
-                                </button>
-                            </c:if>
+                                <c:choose>
+                                    <c:when test="${not empty buildingEdit.id}">
+                                        <button type="button" class="btn btn-warning" id="btnAddBuilding">
+                                            Cập nhật thông tin
+                                        </button>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button type="button" class="btn btn-primary" id="btnAddBuilding">
+                                            Thêm tòa nhà
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
                                 <a href="/admin/building-list">
                                     <button type="button" class="btn btn-danger">
                                         Hủy thao tác
@@ -249,19 +251,19 @@
         $('.error-message').html('');
         if (json['name'] === '') {
             ok = 0;
-            $('#name').after('<span style="color: red" class="error-message">Tên tòa nhà không được trống</span>')
+            $('#nameError').html('Tên tòa nhà không được trống')
         }
         if (json['district'] === ''){
             ok = 0;
-            $('#district').after('<span style="color: red">Quận không được trống</span>')
+            $('#districtError').html('Quận không được trống')
         }
         if (json['rentArea'] === ''){
             ok = 0;
-            $('#rentArea').after('<span style="color: red">Diện tích thuê không được trống</span>')
+            $('#rentAreaError').html('Diện tích thuê không được trống')
         }
         if (json['rentPrice'] === ''){
             ok = 0;
-            $('#rentPrice').after('<span style="color: red">Giá thuê không được trống</span>')
+            $('#rentPriceError').html('Giá thuê không được trống')
         }
         if (json['typeCode'].length === 0){
             ok = 0;
@@ -284,9 +286,9 @@
         json['typeCode'] = typeCode;
         json['id'] = $('#id').val();
         ok = 1;
-        // validateDataBuilding(json);
+        validateDataBuilding(json);
         if (ok === 0){
-            alert('Failed');
+            alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi tiếp tục.');
         }
         else{
             if (json['id'] === ''){
@@ -305,10 +307,10 @@
             dataType: "json",
             contentType : "application/json",
             success: function(response){
-                alert(response.responseJSON.message);
+                alert(response.message);
             },
             error: function(response){
-                alert(response.responseJSON.data.join('\n'));
+                alert(response.message);
             }
         });
     }
@@ -323,7 +325,7 @@
                 alert(response.message);
             },
             error: function(response){
-                console.log(response.message);
+                alert(response.message);
             }
         });
     }

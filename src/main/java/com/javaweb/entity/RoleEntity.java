@@ -1,5 +1,7 @@
 package com.javaweb.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ public class RoleEntity extends BaseEntity {
     }
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("roles")
     private List<UserEntity> user = new ArrayList<>();
 
 //    @OneToMany(mappedBy="roles",fetch = FetchType.LAZY)

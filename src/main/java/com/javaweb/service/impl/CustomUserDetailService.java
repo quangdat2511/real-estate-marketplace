@@ -3,7 +3,7 @@ package com.javaweb.service.impl;
 import com.javaweb.model.dto.MyUserDetail;
 import com.javaweb.model.dto.RoleDTO;
 import com.javaweb.model.dto.UserDTO;
-import com.javaweb.service.IUserService;
+import com.javaweb.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +20,7 @@ import java.util.List;
 public class CustomUserDetailService implements UserDetailsService {
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {

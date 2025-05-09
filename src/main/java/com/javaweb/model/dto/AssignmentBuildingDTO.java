@@ -9,5 +9,5 @@ import java.util.List;
 @Setter
 public class AssignmentBuildingDTO {
     private Long buildingId;
-    private List<Long> staffs;
+    private List<Long> staffIds;
 }

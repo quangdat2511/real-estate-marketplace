@@ -10,16 +10,15 @@ import java.util.Date;
 @Getter
 @Setter
 public class BuildingSearchResponse extends AbstractDTO {
-	private Date createdDate;
 	private String name;
 	private String address;
 	private Long numberOfBasement;
 	private String managerName;
 	private String managerPhoneNumber;
 	private Long floorArea;
+	private Long availableArea;
 	private String rentArea;
-    private String emptyArea;
-    private Long rentPrice;
-    private String serviceFee;
-    private Double brokerageFee;
+	private Long rentPrice;
+	private String serviceFee;
+	private Double brokerageFee;
 }

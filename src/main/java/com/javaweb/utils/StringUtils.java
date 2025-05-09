@@ -1,8 +1,18 @@
-package com.javaweb.utils;
+package com.javaweb.util;
 
-public final class StringUtils {
-	public static boolean check(String data) { 
-		if(data != null && !data.equals(""))return true;
-		else return false;
+public class StringUtils {
+	public static boolean isNotBlank(String value) {
+		if (value != null && !value.isEmpty())
+			return true;
+		return false;
+	}
+	public static boolean isNumber(String value) {
+		try {
+			Long number = Long.parseLong(value);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 }

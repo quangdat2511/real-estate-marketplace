@@ -21,7 +21,7 @@ public class BuildingSearchRequest extends AbstractDTO {
     private Long rentPriceFrom;
     private Long rentPriceTo;
     private String managerName;
-    private String managerPhoneNumber;
+    private String managerPhone;
     private Long staffId;
     private List<String> typeCode;
 }

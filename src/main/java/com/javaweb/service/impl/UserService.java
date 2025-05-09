@@ -9,7 +9,6 @@ import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.MyException;
 import com.javaweb.repository.RoleRepository;
 import com.javaweb.repository.UserRepository;
-import com.javaweb.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class UserService implements IUserService {
+public class UserService implements com.javaweb.service.UserService {
 
     @Autowired
     private UserRepository userRepository;
