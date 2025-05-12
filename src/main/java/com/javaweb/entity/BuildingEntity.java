@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "building")
 public class BuildingEntity extends BaseEntity{
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "street")
     private String street;
@@ -22,7 +22,7 @@ public class BuildingEntity extends BaseEntity{
     private List<RentAreaEntity> rentAreaEntities;
     @OneToMany(mappedBy = "buildingEntity")
     private List<AssignmentBuildingEntity> assignmentBuildingEntities;
-    @Column(name = "district")
+    @Column(name = "district", nullable = false)
     private String district;
     @Column(name = "structure")
     private String structure;
@@ -60,7 +60,7 @@ public class BuildingEntity extends BaseEntity{
     private String decorationTime;
     @Column(name = "brokeragefee")
     private Double brokerageFee;
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
     @Column(name = "note")
     private String note;

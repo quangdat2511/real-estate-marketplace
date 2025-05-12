@@ -11,9 +11,9 @@ import javax.persistence.*;
 @Setter
 public class AssignmentBuildingEntity extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "staffid")
+    @JoinColumn(name = "staffid", nullable = false)
     private UserEntity staff;
     @ManyToOne
-    @JoinColumn(name = "buildingid")
+    @JoinColumn(name = "buildingid", nullable = false)
     private BuildingEntity buildingEntity;
 }

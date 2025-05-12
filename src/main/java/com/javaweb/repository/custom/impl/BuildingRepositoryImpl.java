@@ -1,7 +1,6 @@
 package com.javaweb.repository.custom.impl;
 
 import com.javaweb.entity.BuildingEntity;
-import com.javaweb.enums.District;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;
 import org.springframework.stereotype.Repository;
@@ -42,7 +41,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
                     if (value != null) {
                         if (StringUtils.isNumber(value.toString())) {
                             where.append(" AND b." + key + " = " + value.toString());
-                        } else {
+                        } else if (!value.toString().isEmpty()){
                             where.append(" AND b." + key + " Like '%" + value.toString() + "%'");
                         }
                     }
