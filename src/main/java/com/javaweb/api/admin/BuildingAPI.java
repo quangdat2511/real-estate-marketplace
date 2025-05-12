@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import javax.xml.ws.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -29,22 +30,28 @@ public class BuildingAPI {
     @Autowired
     private BuildingService buildingService;
 
-    public BuildingAPI(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-    @PostMapping
-    public ResponseEntity<?> createBuilding(@Valid @RequestBody BuildingDTO buildingDTO, BindingResult bindingResult) {
-        ResponseDTO responseDTO = new ResponseDTO();
+    private ResponseEntity<?> handleValidationErrors(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> fieldErrors = bindingResult.getFieldErrors()
                     .stream()
                     .map(FieldError::getDefaultMessage)
                     .collect(Collectors.toList());
+            ResponseDTO responseDTO = new ResponseDTO();
             responseDTO.setMessage("Validate Failed");
             responseDTO.setData(fieldErrors);
-            return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
         }
+        return null; // Không có lỗi
+    }
+    public BuildingAPI(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    @PostMapping
+    public ResponseEntity<?> createBuilding(@Valid @RequestBody BuildingDTO buildingDTO, BindingResult bindingResult) {
+        ResponseEntity<?> errors = handleValidationErrors(bindingResult);
+        if (errors != null) return errors;
         buildingService.createBuilding(buildingDTO);
+        ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("Create building successfully");
         responseDTO.setData(buildingDTO);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
@@ -52,17 +59,10 @@ public class BuildingAPI {
 
     @PutMapping
     public ResponseEntity<?> updateBuilding(@Valid @RequestBody BuildingDTO buildingDTO, BindingResult bindingResult) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        if (bindingResult.hasErrors()) {
-            List<String> fieldErrors = bindingResult.getFieldErrors()
-                    .stream()
-                    .map(FieldError::getDefaultMessage)
-                    .collect(Collectors.toList());
-            responseDTO.setMessage("Validate Failed");
-            responseDTO.setData(fieldErrors);
-            return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
-        }
+        ResponseEntity<?> errors = handleValidationErrors(bindingResult);
+        if (errors != null) return errors;
         buildingService.updateBuilding(buildingDTO);
+        ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("Update building successfully");
         responseDTO.setData(buildingDTO);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
@@ -71,13 +71,23 @@ public class BuildingAPI {
     public ResponseEntity<?> loadStaffs(@PathVariable Long id) {
         ResponseDTO responseDTO = new ResponseDTO();
         List<UserEntity> staffList = userRepository.findByStatusAndRoles_Code(1, "STAFF");
-        List<UserEntity> assignedStaffs = userRepository.findByAssignmentBuildingEntities_BuildingEntity_Id(id);
+        Set<Long> assignedStaffIds = userRepository.findByAssignmentBuildingEntities_BuildingEntity_Id(id)
+                .stream()
+                .map(UserEntity::getId)
+                .collect(Collectors.toSet());
+        List<StaffResponseDTO> staffResponseDTOList = getStaffResponseDTOS(staffList, assignedStaffIds);
+        responseDTO.setMessage("Load staffs successfully");
+        responseDTO.setData(staffResponseDTOList);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+    }
+
+    private static List<StaffResponseDTO> getStaffResponseDTOS(List<UserEntity> staffList, Set<Long> assignedStaffIds) {
         List<StaffResponseDTO> staffResponseDTOList = new ArrayList<>();
         for (UserEntity staff : staffList) {
             StaffResponseDTO staffResponseDTO = new StaffResponseDTO();
             staffResponseDTO.setStaffId(staff.getId());
             staffResponseDTO.setFullName(staff.getFullName());
-            if (assignedStaffs.contains(staff)){
+            if (assignedStaffIds.contains(staff.getId())){
                 staffResponseDTO.setChecked("checked");
             }
             else{
@@ -85,10 +95,9 @@ public class BuildingAPI {
             }
             staffResponseDTOList.add(staffResponseDTO);
         }
-        responseDTO.setMessage("Load staffs successfully");
-        responseDTO.setData(staffResponseDTOList);
-        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+        return staffResponseDTOList;
     }
+
     @DeleteMapping("/{ids}")
     public ResponseEntity<?> deleteBuildings(@PathVariable List<Long> ids) {
         if (ids.isEmpty()){
