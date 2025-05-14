@@ -73,13 +73,9 @@ public class BuildingServiceImpl implements BuildingService {
         if (buildingEntities.size() != ids.size()){
             throw new ValidateDataException("One or more building IDs are invalid!");
         }
-        List<Long> rentAreaIds = buildingEntities.stream().flatMap(buildingEntity -> buildingEntity.getRentAreaEntities().
-                        stream()).map(BaseEntity::getId).collect(Collectors.toList());
-        rentAreaRepository.deleteByIdIn(rentAreaIds);
-        List<Long> assignmentBuildingIds = buildingEntities.stream().flatMap(buildingEntity -> buildingEntity.getAssignmentBuildingEntities().
-                        stream()).map(AssignmentBuildingEntity::getId).collect(Collectors.toList());
-        assignmentBuildingRepository.deleteByIdIn(assignmentBuildingIds);
-        buildingRepository.deleteByIdIn(ids);
+        rentAreaRepository.deleteAllByBuildingEntity_IdIn(ids);
+        assignmentBuildingRepository.deleteAllByBuildingEntity_IdIn(ids);
+        buildingRepository.deleteAllByIdIn(ids);
         return "success";
     }
 }

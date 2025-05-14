@@ -6,6 +6,6 @@ import java.util.List;
 
 
 public interface AssignmentBuildingRepository extends JpaRepository<AssignmentBuildingEntity, Long> {
-    void deleteByIdIn(List<Long> ids);
-    void deleteByBuildingEntity_Id(Long buildingEntityId);
+    void deleteByBuildingEntity_Id(Long buildingId);
+    void deleteAllByBuildingEntity_IdIn(List<Long> buildingIds);
 }
