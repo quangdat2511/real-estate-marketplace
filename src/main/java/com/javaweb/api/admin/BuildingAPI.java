@@ -46,26 +46,23 @@ public class BuildingAPI {
     public BuildingAPI(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    @PostMapping
-    public ResponseEntity<?> createBuilding(@Valid @RequestBody BuildingDTO buildingDTO, BindingResult bindingResult) {
+    private ResponseEntity<?> saveBuilding(BuildingDTO buildingDTO, BindingResult bindingResult, String successMessage) {
         ResponseEntity<?> errors = handleValidationErrors(bindingResult);
         if (errors != null) return errors;
-        buildingService.createBuilding(buildingDTO);
+        buildingService.createOrUpdateBuilding(buildingDTO);
         ResponseDTO responseDTO = new ResponseDTO();
-        responseDTO.setMessage("Create building successfully");
+        responseDTO.setMessage(successMessage);
         responseDTO.setData(buildingDTO);
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        return ResponseEntity.ok(responseDTO);
+    }
+    @PostMapping
+    public ResponseEntity<?> createBuilding(@Valid @RequestBody BuildingDTO buildingDTO, BindingResult bindingResult) {
+        return saveBuilding(buildingDTO, bindingResult, "Create building successfully");
     }
 
     @PutMapping
     public ResponseEntity<?> updateBuilding(@Valid @RequestBody BuildingDTO buildingDTO, BindingResult bindingResult) {
-        ResponseEntity<?> errors = handleValidationErrors(bindingResult);
-        if (errors != null) return errors;
-        buildingService.updateBuilding(buildingDTO);
-        ResponseDTO responseDTO = new ResponseDTO();
-        responseDTO.setMessage("Update building successfully");
-        responseDTO.setData(buildingDTO);
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        return saveBuilding(buildingDTO, bindingResult, "Update building successfully");
     }
     @GetMapping("/{id}/staffs")
     public ResponseEntity<?> loadStaffs(@PathVariable Long id) {

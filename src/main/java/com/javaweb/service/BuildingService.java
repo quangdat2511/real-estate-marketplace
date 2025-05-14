@@ -9,8 +9,7 @@ import java.util.List;
 
 public interface BuildingService {
     List<BuildingSearchResponse> getAllBuildings(BuildingSearchRequest buildingSearchRequest);
-    BuildingEntity createBuilding(BuildingDTO buildingDTO);
-    BuildingEntity updateBuilding(BuildingDTO buildingDTO);
+    BuildingEntity createOrUpdateBuilding(BuildingDTO buildingDTO);
     BuildingDTO findById(Long id);
     String delete(List<Long> ids);
 }

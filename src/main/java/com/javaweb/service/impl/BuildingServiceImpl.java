@@ -43,23 +43,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public BuildingEntity createBuilding(BuildingDTO buildingDTO) {
-        BuildingEntity buildingEntity = buildingConverter.toBuildingEntity(buildingDTO);
-        buildingRepository.save(buildingEntity);
-        if (buildingDTO.getRentArea() != null){
-            String[] rentAreas = buildingDTO.getRentArea().split(",\\s*");
-            for (String rentArea : rentAreas) {
-                RentAreaEntity rentAreaEntity = new RentAreaEntity();
-                rentAreaEntity.setBuildingEntity(buildingEntity);
-                rentAreaEntity.setValue(Long.parseLong(rentArea));
-                rentAreaRepository.save(rentAreaEntity);
-            }
-        }
-        return buildingEntity;
-    }
-
-    @Override
-    public BuildingEntity updateBuilding(BuildingDTO buildingDTO) {
+    public BuildingEntity createOrUpdateBuilding(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.toBuildingEntity(buildingDTO);
         buildingRepository.save(buildingEntity);
         if (buildingEntity.getRentAreaEntities() != null){
@@ -85,15 +69,17 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public String delete(List<Long> ids) {
-        for (Long id: ids){
-            BuildingEntity buildingEntity = buildingRepository.findById(id).orElseThrow(() -> new ValidateDataException("Building is not found!"));
-            List<RentAreaEntity> rentAreaEntities = buildingEntity.getRentAreaEntities();
-            rentAreaRepository.deleteByIdIn(rentAreaEntities.stream().map(BaseEntity::getId).collect(Collectors.toList()));
-            List<AssignmentBuildingEntity> asssignmentBuildingEntities = buildingEntity.getAssignmentBuildingEntities();
-            assignmentBuildingRepository.deleteByIdIn((asssignmentBuildingEntities.stream().map(BaseEntity::getId).collect(Collectors.toList())));
-            buildingRepository.deleteById(id);
+        List<BuildingEntity> buildingEntities = buildingRepository.findAllById(ids);
+        if (buildingEntities.size() != ids.size()){
+            throw new ValidateDataException("One or more building IDs are invalid!");
         }
+        List<Long> rentAreaIds = buildingEntities.stream().flatMap(buildingEntity -> buildingEntity.getRentAreaEntities().
+                        stream()).map(BaseEntity::getId).collect(Collectors.toList());
+        rentAreaRepository.deleteByIdIn(rentAreaIds);
+        List<Long> assignmentBuildingIds = buildingEntities.stream().flatMap(buildingEntity -> buildingEntity.getAssignmentBuildingEntities().
+                        stream()).map(AssignmentBuildingEntity::getId).collect(Collectors.toList());
+        assignmentBuildingRepository.deleteByIdIn(assignmentBuildingIds);
+        buildingRepository.deleteByIdIn(ids);
         return "success";
     }
-
 }

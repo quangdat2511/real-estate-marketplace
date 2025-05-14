@@ -21,10 +21,6 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         if (buildingSearchRequest.getStaffId() != null) {
             join.append(" join assignmentbuilding asbd on asbd.buildingid = b.id");
         }
-//        if (buildingSearchRequest.getTypeCode() != null && !buildingSearchRequest.getTypeCode().isEmpty()) {
-//            join.append(" join buildingrenttype brt on b.id = brt.buildingid ");
-//            join.append(" join renttype rt on brt.renttypeid = rt.id");
-//        }
         if (buildingSearchRequest.getAreaFrom() != null || buildingSearchRequest.getAreaTo() != null) {
             join.append(" join rentarea on rentarea.buildingid = b.id");
         }
@@ -93,7 +89,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         buildJoinClause(buildingSearchRequest, sql);
         buildCondition(buildingSearchRequest, where);
         sql.append(where);
-//        sql.append(" order by b.createddate DESC");
+        sql.append(" order by b.createddate DESC");
         Query query = entityManager.createNativeQuery(sql.toString(), BuildingEntity.class);
         return query.getResultList();
     }

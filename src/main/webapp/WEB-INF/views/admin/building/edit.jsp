@@ -276,7 +276,7 @@
         var json = {};
         var typeCode = [];
         $.each(formData, function(i, it){
-            if (it.name != 'typeCode'){
+            if (it.name !== 'typeCode'){
                 json["" + it.name + ""] = it.value;
             }
             else{
@@ -308,6 +308,7 @@
             contentType : "application/json",
             success: function(response){
                 alert(response.message);
+                window.location.href = "/admin/building-list";
             },
             error: function(response){
                 alert(response.message);
@@ -323,6 +324,7 @@
             contentType : "application/json",
             success: function(response){
                 alert(response.message);
+                window.location.href = "/admin/building-list";
             },
             error: function(response){
                 alert(response.message);
