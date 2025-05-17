@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface BuildingRepositoryCustom {
     List<BuildingEntity> getAllBuildings(BuildingSearchRequest buildingSearchRequest);
+    int countTotalItem(BuildingSearchRequest buildingSearchRequest);
 }

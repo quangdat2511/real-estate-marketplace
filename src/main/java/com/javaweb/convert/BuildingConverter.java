@@ -28,7 +28,7 @@ public class BuildingConverter {
         }
         BuildingEntity buildingEntityNew = modelMapper.map(buildingDTO, BuildingEntity.class);
         if (buildingEntityOld != null){
-            buildingEntityNew.setRentAreaEntities(buildingEntityOld.getRentAreaEntities());
+            buildingEntityNew.setStaffs(buildingEntityOld.getStaffs());
             buildingEntityNew.setCreatedDate(buildingEntityOld.getCreatedDate());
             buildingEntityNew.setCreatedBy(buildingEntityOld.getCreatedBy());
         }

@@ -1,5 +1,6 @@
 package com.javaweb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,6 @@ public class RentAreaEntity extends BaseEntity {
     private Long value;
     @ManyToOne
     @JoinColumn(name = "buildingid")
-    @JsonIgnoreProperties("rentAreaEntities")
+    @JsonBackReference
     private BuildingEntity buildingEntity;
 }

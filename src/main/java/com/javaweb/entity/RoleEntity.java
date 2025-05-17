@@ -1,5 +1,6 @@
 package com.javaweb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class RoleEntity extends BaseEntity {
     }
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("roles")
+    @JsonBackReference
     private List<UserEntity> user = new ArrayList<>();
 
 //    @OneToMany(mappedBy="roles",fetch = FetchType.LAZY)

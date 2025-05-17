@@ -20,6 +20,7 @@ public class AbstractDTO<T> implements Serializable {
     private String createdBy;
     private Date modifiedDate;
     private String modifiedBy;
+    // Số lượng item trong 1 page
     private int maxPageItems = 2;
     private int page = 1;
     private List<T> listResult = new ArrayList<>();
@@ -27,6 +28,7 @@ public class AbstractDTO<T> implements Serializable {
     private String tableId = "tableList";
     private Integer limit;
     private Integer totalPage;
+    // tổng tât cả item
     private Integer totalItem;
     private String searchValue;
 }

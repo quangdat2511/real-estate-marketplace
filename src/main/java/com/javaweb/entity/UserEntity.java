@@ -1,5 +1,7 @@
 package com.javaweb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,7 +40,9 @@ public class UserEntity extends BaseEntity {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
+    @JsonManagedReference
     private List<RoleEntity> roles = new ArrayList<>();
-    @OneToMany(mappedBy = "staff")
-    private List<AssignmentBuildingEntity> assignmentBuildingEntities;
+    @ManyToMany(mappedBy = "staffs")
+    @JsonBackReference
+    private List<BuildingEntity> buildingEntities;
 }

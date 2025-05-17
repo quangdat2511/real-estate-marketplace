@@ -2,6 +2,7 @@ package com.javaweb.entity;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,10 +19,17 @@ public class BuildingEntity extends BaseEntity{
     private String street;
     @Column(name = "ward")
     private String ward;
-    @OneToMany(mappedBy = "buildingEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "buildingEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<RentAreaEntity> rentAreaEntities;
-    @OneToMany(mappedBy = "buildingEntity")
-    private List<AssignmentBuildingEntity> assignmentBuildingEntities;
+    @ManyToMany
+    @JoinTable(
+            name ="assignmentbuilding",
+            joinColumns = @JoinColumn(name="buildingid"),
+            inverseJoinColumns = @JoinColumn(name="staffid")
+    )
+    @JsonManagedReference
+    private List<UserEntity> staffs;
     @Column(name = "district", nullable = false)
     private String district;
     @Column(name = "structure")
@@ -43,7 +51,7 @@ public class BuildingEntity extends BaseEntity{
     @Column(name = "carfee")
     private String carFee;
     @Column(name = "motofee")
-    private String motorbikeFee;
+    private String motoFee;
     @Column(name = "overtimefee")
     private String overtimeFee;
     @Column(name = "waterfee")
@@ -69,9 +77,10 @@ public class BuildingEntity extends BaseEntity{
     @Column(name = "map")
     private String map;
     @Column(name = "avatar")
-    private String avatar;
+    private String image;
     @Column(name = "managername")
     private String managerName;
     @Column(name = "managerphone")
     private String managerPhone;
+//    private String image;
 }
