@@ -2,11 +2,11 @@ package com.javaweb.service.impl;
 
 import com.javaweb.constant.SystemConstant;
 import com.javaweb.converter.UserConverter;
-import com.javaweb.model.dto.PasswordDTO;
-import com.javaweb.model.dto.UserDTO;
 import com.javaweb.entity.RoleEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.MyException;
+import com.javaweb.model.dto.PasswordDTO;
+import com.javaweb.model.dto.UserDTO;
 import com.javaweb.repository.RoleRepository;
 import com.javaweb.repository.UserRepository;
 import org.apache.commons.lang.StringUtils;
@@ -17,7 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

@@ -1,12 +1,9 @@
 package com.javaweb.api.admin;
 
-import com.javaweb.entity.BuildingEntity;
-import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.ValidateDataException;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
-import com.javaweb.repository.UserRepository;
 import com.javaweb.service.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,17 +13,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/api/buildings")
 public class BuildingAPI {
-    private final UserRepository userRepository;
     @Autowired
     private BuildingService buildingService;
 
@@ -42,9 +35,6 @@ public class BuildingAPI {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
         }
         return null; // Không có lỗi
-    }
-    public BuildingAPI(UserRepository userRepository) {
-        this.userRepository = userRepository;
     }
     private ResponseEntity<?> saveBuilding(BuildingDTO buildingDTO, BindingResult bindingResult, String successMessage) {
         ResponseEntity<?> errors = handleValidationErrors(bindingResult);
@@ -67,37 +57,14 @@ public class BuildingAPI {
     @GetMapping("/{id}/staffs")
     public ResponseEntity<?> loadStaffs(@PathVariable Long id) {
         ResponseDTO responseDTO = new ResponseDTO();
-        List<UserEntity> staffList = userRepository.findByStatusAndRoles_Code(1, "STAFF");
-        Set<Long> assignedStaffIds = userRepository.findByAssignmentBuildingEntities_BuildingEntity_Id(id)
-                .stream()
-                .map(UserEntity::getId)
-                .collect(Collectors.toSet());
-        List<StaffResponseDTO> staffResponseDTOList = getStaffResponseDTOS(staffList, assignedStaffIds);
+        List<StaffResponseDTO> staffResponseDTOList = buildingService.getStaffByBuildingId(id);
         responseDTO.setMessage("Load staffs successfully");
         responseDTO.setData(staffResponseDTOList);
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
-
-    private static List<StaffResponseDTO> getStaffResponseDTOS(List<UserEntity> staffList, Set<Long> assignedStaffIds) {
-        List<StaffResponseDTO> staffResponseDTOList = new ArrayList<>();
-        for (UserEntity staff : staffList) {
-            StaffResponseDTO staffResponseDTO = new StaffResponseDTO();
-            staffResponseDTO.setStaffId(staff.getId());
-            staffResponseDTO.setFullName(staff.getFullName());
-            if (assignedStaffIds.contains(staff.getId())){
-                staffResponseDTO.setChecked("checked");
-            }
-            else{
-                staffResponseDTO.setChecked("unchecked");
-            }
-            staffResponseDTOList.add(staffResponseDTO);
-        }
-        return staffResponseDTOList;
-    }
-
     @DeleteMapping("/{ids}")
     public ResponseEntity<?> deleteBuildings(@PathVariable List<Long> ids) {
-        if (ids.isEmpty()){
+        if (ids == null || ids.isEmpty()){
             throw new ValidateDataException("No building is selected to delete");
         }
         buildingService.delete(ids);

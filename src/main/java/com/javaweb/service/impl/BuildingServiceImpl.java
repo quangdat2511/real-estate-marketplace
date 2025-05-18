@@ -1,17 +1,18 @@
 package com.javaweb.service.impl;
 
 import com.javaweb.convert.BuildingConverter;
-import com.javaweb.entity.AssignmentBuildingEntity;
-import com.javaweb.entity.BaseEntity;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.RentAreaEntity;
+import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.ValidateDataException;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
+import com.javaweb.model.response.StaffResponseDTO;
 import com.javaweb.repository.AssignmentBuildingRepository;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.RentAreaRepository;
+import com.javaweb.repository.UserRepository;
 import com.javaweb.service.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +34,13 @@ public class BuildingServiceImpl implements BuildingService {
     private RentAreaRepository rentAreaRepository;
     @Autowired
     private AssignmentBuildingRepository assignmentBuildingRepository;
+    @Autowired
+    private UserRepository userRepository;
+    /**
+     * Finds all buildings based on given search criteria.
+     * @param buildingSearchRequest Contains filtering criteria for buildings
+     * @return List of buildings matching the search criteria
+     */
     public List<BuildingSearchResponse> getAllBuildings(BuildingSearchRequest buildingSearchRequest) {
         List<BuildingEntity> buildingEntities = buildingRepository.getAllBuildings(buildingSearchRequest);
         List<BuildingSearchResponse> results = new ArrayList<>();
@@ -77,5 +86,30 @@ public class BuildingServiceImpl implements BuildingService {
         assignmentBuildingRepository.deleteAllByBuildingEntity_IdIn(ids);
         buildingRepository.deleteAllByIdIn(ids);
         return "success";
+    }
+    private List<StaffResponseDTO> getStaffResponseDTOS(List<UserEntity> staffList, Set<Long> assignedStaffIds) {
+        List<StaffResponseDTO> staffResponseDTOList = new ArrayList<>();
+        for (UserEntity staff : staffList) {
+            StaffResponseDTO staffResponseDTO = new StaffResponseDTO();
+            staffResponseDTO.setStaffId(staff.getId());
+            staffResponseDTO.setFullName(staff.getFullName());
+            if (assignedStaffIds.contains(staff.getId())){
+                staffResponseDTO.setChecked("checked");
+            }
+            else{
+                staffResponseDTO.setChecked("unchecked");
+            }
+            staffResponseDTOList.add(staffResponseDTO);
+        }
+        return staffResponseDTOList;
+    }
+    @Override
+    public List<StaffResponseDTO> getStaffByBuildingId(Long id) {
+        List<UserEntity> staffList = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+        Set<Long> assignedStaffIds = userRepository.findByAssignmentBuildingEntities_BuildingEntity_Id(id)
+                .stream()
+                .map(UserEntity::getId)
+                .collect(Collectors.toSet());
+        return getStaffResponseDTOS(staffList, assignedStaffIds);
     }
 }
