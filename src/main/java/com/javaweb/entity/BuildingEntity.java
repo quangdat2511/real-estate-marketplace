@@ -82,5 +82,4 @@ public class BuildingEntity extends BaseEntity{
     private String managerName;
     @Column(name = "managerphone")
     private String managerPhone;
-//    private String image;
 }

@@ -213,7 +213,7 @@
                     <div class="form-group">
                         <label class="col-xs-3 control-label">Ghi chú</label>
                         <div class="col-xs-9">
-                            <input type="text" class="form-control" name="note">
+                            <form:input class="form-control" path="note"/>
                         </div>
                     </div>
                     <div class="form-group">

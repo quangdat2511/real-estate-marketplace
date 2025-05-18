@@ -61,8 +61,8 @@ public class BuildingServiceImpl implements BuildingService {
             rentAreaEntities.add(rentAreaEntity);
         }
         buildingEntity.setRentAreaEntities(rentAreaEntities);
-        buildingRepository.save(buildingEntity);
         saveThumbnail(buildingDTO, buildingEntity);
+        buildingRepository.save(buildingEntity);
         return buildingEntity;
     }
     @Override
