@@ -20,7 +20,6 @@ public interface UserService {
     UserDTO resetPassword(long id);
     UserDTO updateProfileOfUser(String id, UserDTO userDTO);
     void delete(long[] ids);
-//    ResponseDTO listStaff(Long buildingId);
     List<UserDTO> getAllUsers(Pageable pageable);
     Map<Long, String> getStaffs();
     int countTotalItems();

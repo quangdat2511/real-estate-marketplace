@@ -1,12 +1,9 @@
 package com.javaweb.api.admin;
 
-import com.javaweb.entity.BuildingEntity;
-import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.ValidateDataException;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
-import com.javaweb.repository.UserRepository;
 import com.javaweb.service.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -70,7 +64,7 @@ public class BuildingAPI {
     }
     @DeleteMapping("/{ids}")
     public ResponseEntity<?> deleteBuildings(@PathVariable List<Long> ids) {
-        if (ids.isEmpty()){
+        if (ids == null || ids.isEmpty()){
             throw new ValidateDataException("No building is selected to delete");
         }
         buildingService.delete(ids);

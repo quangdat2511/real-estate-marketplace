@@ -1,10 +1,9 @@
 package com.javaweb.repository.custom.impl;
 
 import com.javaweb.entity.BuildingEntity;
-import com.javaweb.entity.UserEntity;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;
-import org.springframework.data.domain.Page;
+import com.javaweb.util.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -13,7 +12,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.reflect.Field;
-import com.javaweb.util.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
