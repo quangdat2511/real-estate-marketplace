@@ -233,13 +233,13 @@
                         <label class="col-xs-3 control-label"></label>
                         <div class="col-xs-9">
                                 <c:choose>
-                                    <c:when test="${not empty buildingEdit.id}">
-                                        <button type="button" class="btn btn-warning" id="btnAddBuilding">
+                                    <ac:when test="${not empty buildingEdit.id}">
+                                        <button type="button" class="btn btn-warning" id="btnAddOrUpdateBuilding">
                                             Cập nhật thông tin
                                         </button>
-                                    </c:when>
+                                    </ac:when>
                                     <c:otherwise>
-                                        <button type="button" class="btn btn-primary" id="btnAddBuilding">
+                                        <button type="button" class="btn btn-primary" id="btnAddOrUpdateBuilding">
                                             Thêm tòa nhà
                                         </button>
                                     </c:otherwise>
@@ -251,7 +251,8 @@
                                 </a>
                         </div>
                     </div>
-                    <input type="hidden" id="id" value="${buildingEdit.id}"></input>
+                    <input type="hidden" id="id" value="${buildingEdit.id}"/>
+                    <input type="hidden" id="oldImage" value="${buildingEdit.image}" />
                 </form:form>
 
             </div>
@@ -286,7 +287,7 @@
         }
     }
 
-    $('#btnAddBuilding').click(function(){
+    $('#btnAddOrUpdateBuilding').click(function(){
         var formData = $('#form-edit').serializeArray();
         var json = {};
         var typeCode = [];
@@ -300,6 +301,9 @@
             if ('' !== imageBase64) {
                 json['imageBase64'] = imageBase64;
                 json['imageName'] = imageName;
+            }
+            else {
+                json['image'] = $('#oldImage').val();
             }
         })
         json['typeCode'] = typeCode;

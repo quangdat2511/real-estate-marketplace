@@ -61,16 +61,6 @@ public class BuildingController {
         ModelAndView modelAndView = new ModelAndView("admin/building/edit");
         //findById dưới service và convert qua DTO
         BuildingDTO buildingDTO = buildingService.findById(id);
-//        buildingDTO.setId(id);
-//        buildingDTO.setDistrict("QUAN_2");
-//        buildingDTO.setName("quangdat");
-//        buildingDTO.setStreet("TO HIEN THANh");
-//        buildingDTO.setRentArea("111, 222, 333");
-//        buildingDTO.setRentPrice(200L);
-//        List<String> typeCode = new ArrayList<>();
-//        typeCode.add("TANG_TRET");
-//        typeCode.add("NOI_THAT");
-//        buildingDTO.setTypeCode(typeCode);
         modelAndView.addObject("buildingEdit", buildingDTO);
         modelAndView.addObject("district", District.getDistrict());
         modelAndView.addObject("type", RentType.getType());

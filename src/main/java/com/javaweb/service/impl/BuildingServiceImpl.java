@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,12 +40,7 @@ public class BuildingServiceImpl implements BuildingService {
     private UploadFileUtils uploadFileUtils;
     public List<BuildingSearchResponse> getAllBuildings(BuildingSearchRequest buildingSearchRequest) {
         List<BuildingEntity> buildingEntities = buildingRepository.getAllBuildings(buildingSearchRequest);
-        List<BuildingSearchResponse> results = new ArrayList<>();
-        for (BuildingEntity buildingEntity : buildingEntities) {
-            BuildingSearchResponse buildingSearchResponse = buildingConverter.toBuildingResponseDTO(buildingEntity);
-            results.add(buildingSearchResponse);
-        }
-        return results;
+        return buildingEntities.stream().map(buildingConverter::toBuildingResponseDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -79,7 +73,6 @@ public class BuildingServiceImpl implements BuildingService {
             throw new ValidateDataException("One or more building IDs are invalid!");
         }
         buildingEntities.forEach(building -> building.getStaffs().clear());
-        buildingRepository.saveAll(buildingEntities);
         buildingRepository.deleteAllByIdIn(ids);
         return "success";
     }
@@ -94,36 +87,41 @@ public class BuildingServiceImpl implements BuildingService {
         return getStaffResponseDTOS(staffList, assignedStaffIds);
     }
     private static List<StaffResponseDTO> getStaffResponseDTOS(List<UserEntity> staffList, Set<Long> assignedStaffIds) {
-        List<StaffResponseDTO> staffResponseDTOList = new ArrayList<>();
-        for (UserEntity staff : staffList) {
-            StaffResponseDTO staffResponseDTO = new StaffResponseDTO();
-            staffResponseDTO.setStaffId(staff.getId());
-            staffResponseDTO.setFullName(staff.getFullName());
-            if (assignedStaffIds.contains(staff.getId())){
-                staffResponseDTO.setChecked("checked");
-            }
-            else{
-                staffResponseDTO.setChecked("unchecked");
-            }
-            staffResponseDTOList.add(staffResponseDTO);
-        }
-        return staffResponseDTOList;
+        return staffList.stream()
+                .map(staff -> {
+                    StaffResponseDTO dto = new StaffResponseDTO();
+                    dto.setStaffId(staff.getId());
+                    dto.setFullName(staff.getFullName());
+                    dto.setChecked(assignedStaffIds.contains(staff.getId()) ? "checked" : "unchecked");
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
     private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
-        String path = "/building/" + buildingDTO.getImageName();
-        if (null != buildingDTO.getImageBase64()) {
-            if (null != buildingEntity.getImage()) {
-                if (!path.equals(buildingEntity.getImage())) {
-                    File file = new File("C://home/office" + buildingEntity.getImage());
-                    file.delete();
-                }
+        if (buildingDTO.getImageBase64() != null && !buildingDTO.getImageBase64().isEmpty()) {
+            String path = "/building/" + buildingDTO.getImageName();
+
+            // Xóa ảnh cũ nếu khác ảnh mới
+            if (buildingEntity.getImage() != null && !path.equals(buildingEntity.getImage())) {
+                File file = new File("C://home/office" + buildingEntity.getImage());
+                file.delete();
             }
+
+            // Ghi ảnh mới
             byte[] bytes = Base64.decodeBase64(buildingDTO.getImageBase64().getBytes());
             uploadFileUtils.writeOrUpdate(path, bytes);
-            buildingEntity.setImage(path);
 
+            // Gán ảnh mới
+            buildingEntity.setImage(path);
+        } else {
+            // Không có ảnh mới: giữ nguyên ảnh cũ từ DTO
+            // Nếu backend vẫn cần set lại, có thể dùng:
+            if (buildingDTO.getImage() != null) {
+                buildingEntity.setImage(buildingDTO.getImage());
+            }
         }
     }
+
     @Override
     public int countTotalItems(BuildingSearchRequest buildingSearchRequest) {
         return buildingRepository.countTotalItem(buildingSearchRequest);

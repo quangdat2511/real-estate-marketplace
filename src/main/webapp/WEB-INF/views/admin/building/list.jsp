@@ -220,12 +220,13 @@
             <div class="row">
                 <div class="col-xs-12">
                     <display:table name="${buildingSearchResponses.listResult}" cellspacing="0" cellpadding="0"
-                                                           requestURI="/admin/building-list" partialList="true" sort="external"
-                                                           size="${buildingSearchResponses.totalItems}" defaultsort="2" defaultorder="ascending"
-                                                           id="tableList" pagesize="${buildingSearchResponses.maxPageItems}"
-                                                           export="false"
-                                                           class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
-                                                           style="margin: 3em 0 1.5em;">
+                           requestURI="/admin/building-list" partialList="true" sort="external"
+                           size="${buildingSearchResponses.totalItems}" defaultsort="2" defaultorder="ascending"
+                           id="tableList" pagesize="${buildingSearchResponses.maxPageItems}"
+                           export="false"
+                           class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
+                           style="margin: 3em 0 1.5em;">
+                            <display:column title="" escapeXml="false"><span class="hidden-id" data-id="${tableList.id}"></span></display:column>
                             <display:column headerClass="text-left" property="name" title="Tên"/>
                             <display:column headerClass="text-left" property="address" title="Địa chỉ"/>
                             <display:column headerClass="text-left" property="numberOfBasement" title="Số tầng hầm"/>
@@ -290,6 +291,16 @@
     </div>
     </div><!-- /.main-content -->
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const rows = document.querySelectorAll('table tbody tr');
+            rows.forEach(row => {
+                const span = row.querySelector('.hidden-id');
+                if (span) {
+                    const id = span.getAttribute('data-id');
+                    if (id) row.id = 'building-row-' + id;
+                }
+            });
+        });
         function assigmentBuilding(buildingId) {
             console.log('id tòa nhà: ' + buildingId);
             $('#assignmentBuildingModal').modal();
@@ -373,9 +384,10 @@
                 url: "/api/buildings/" + ids,
                 success: function(response) {
                     alert(response.message);
-                    ids.forEach(function(id) {
-                        $('#building-row-' + id).remove();
-                    });
+                    // ids.forEach(function(id) {
+                    //     $('#building-row-' + id).remove();
+                    // });
+                    window.location.reload();
                 },
                 error: function(response) {
                     const message = response.responseJSON?.message || "A problem occurred while deleting.";

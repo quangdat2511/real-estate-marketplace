@@ -19,7 +19,10 @@ public class BuildingEntity extends BaseEntity{
     private String street;
     @Column(name = "ward")
     private String ward;
-    @OneToMany(mappedBy = "buildingEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "buildingEntity",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            orphanRemoval = true)
     @JsonManagedReference
     private List<RentAreaEntity> rentAreaEntities;
     @ManyToMany
