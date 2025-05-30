@@ -44,17 +44,22 @@
             <div class="col-xs-12">
                 <form:form class="form-horizontal" role="form" id="form-edit" action="/admin/building-edit" method="GET" modelAttribute="buildingEdit">
                     <div class="form-group">
-                        <label class="col-xs-3 control-label" >Tên tòa nhà</label>
+                        <div class="col-xs-offset-3 col-xs-9">
+                            <p style="color: red; font-style: italic; margin-top: 0;">Các trường có tiêu đề màu đỏ là bắt buộc</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" style="color: red;">Tên tòa nhà</label>
                         <div class="col-xs-9">
                             <form:input class="form-control" path="name"/>
                             <span class="error-message" style="color:red" id="nameError"></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-3 control-label" >Quận</label>
+                        <label class="col-xs-3 control-label" style="color: red;">Quận/Huyện/Thành phố</label>
                         <div class="col-xs-2">
                             <form:select path="district" class="form-control">
-                                <form:option value="">---Chọn quận---</form:option>
+                                <form:option value="">--Chọn quận/huyện/thành phố--</form:option>
                                 <form:options items="${district}"/>
                             </form:select>
                             <span class="error-message" style="color:red" id="districtError"></span>
@@ -103,7 +108,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-3 control-label" >Giá thuê</label>
+                        <label class="col-xs-3 control-label" style="color: red;">Giá thuê</label>
                         <div class="col-xs-9">
                             <form:input class="form-control" path="rentPrice"/>
                             <span class="error-message" style="color:red" id="rentPriceError"></span>
@@ -197,14 +202,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-3 control-label">Loại tòa nhà</label>
+                        <label class="col-xs-3 control-label" style="color: red;">Loại tòa nhà</label>
                         <div class="col-xs-9">
                             <form:checkboxes path="typeCode" items="${type}"/>
                             <span class="error-message" style="color:red" id="typeCodeError"></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-xs-3 control-label">Diện tích thuê</label>
+                        <label class="col-xs-3 control-label" style="color: red;">Diện tích thuê</label>
                         <div class="col-xs-9">
                             <form:input class="form-control" path="rentArea"/>
                             <span class="error-message" style="color:red" id="rentAreaError"></span>
@@ -286,7 +291,7 @@
         json['typeCode'] = typeCode;
         json['id'] = $('#id').val();
         ok = 1;
-        validateDataBuilding(json);
+        // validateDataBuilding(json);
         if (ok === 0){
             alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi tiếp tục.');
         }
@@ -311,7 +316,12 @@
                 window.location.href = "/admin/building-list";
             },
             error: function(response){
-                alert(response.message);
+                const res = response.responseJSON;
+                if (Array.isArray(res.data)) {
+                    alert(res.data.join('\n'));
+                } else {
+                    alert(res.message || "Something went wrong");
+                }
             }
         });
     }
@@ -327,7 +337,12 @@
                 window.location.href = "/admin/building-list";
             },
             error: function(response){
-                alert(response.message);
+                const res = response.responseJSON;
+                if (Array.isArray(res.data)) {
+                    alert(res.data.join('\n'));
+                } else {
+                    alert(res.message || "Something went wrong");
+                }
             }
         });
     }

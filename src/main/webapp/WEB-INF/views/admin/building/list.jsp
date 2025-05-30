@@ -84,9 +84,9 @@
                                         <div class="form-group">
                                             <div class="col-xs-12">
                                                 <div class="col-xs-2">
-                                                    <label>Quận</label>
+                                                    <label>Quận/Huyện/Thành phố</label>
                                                     <form:select path="district" class="form-control">
-                                                        <form:option value="">---Chọn Quận---</form:option>
+                                                        <form:option value="">--Chọn quận/huyện/thành phố--</form:option>
                                                         <form:options items="${district}"/>
                                                     </form:select>
                                                 </div>
@@ -162,7 +162,7 @@
                                                 <div class="col-xs-2">
                                                     <label>Chọn nhân viên</label>
                                                     <form:select path="staffId" class="form-control">
-                                                        <form:option value="">---Chọn nhân viên---</form:option>
+                                                        <form:option value="">--Chọn nhân viên--</form:option>
                                                         <form:options items="${staffs}"/>
                                                     </form:select>
                                                 </div>

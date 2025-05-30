@@ -5,12 +5,15 @@ import com.javaweb.exception.ValidateDataException;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.BuildingSearchResponse;
 import com.javaweb.repository.BuildingRepository;
+import org.apache.logging.log4j.util.Strings;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.javaweb.enums.District;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -40,7 +43,16 @@ public class BuildingConverter {
     }
     public BuildingSearchResponse toBuildingResponseDTO(BuildingEntity buildingEntity) {
         BuildingSearchResponse buildingSearchResponse = modelMapper.map(buildingEntity, BuildingSearchResponse.class);
-        buildingSearchResponse.setAddress(buildingEntity.getStreet() + "," + buildingEntity.getWard() + "," + District.getDistrictName(buildingEntity.getDistrict()));
+        List<String> addressParts = new ArrayList<>();
+        if (buildingEntity.getStreet() != null && !Strings.isBlank(buildingEntity.getStreet())) {
+            addressParts.add(buildingEntity.getStreet());
+        }
+        if (buildingEntity.getWard() != null && !Strings.isBlank(buildingEntity.getWard())) {
+            addressParts.add(buildingEntity.getWard());
+        }
+        String districtName = District.getDistrictName(buildingEntity.getDistrict());
+        addressParts.add(districtName);
+        buildingSearchResponse.setAddress(String.join(", ", addressParts));
         buildingSearchResponse.setAvailableArea(null);
         String rentAreaAsString = buildingEntity.getRentAreaEntities().stream().map(rentArea -> String.valueOf(rentArea.getValue())).collect(Collectors.joining(", "));
         buildingSearchResponse.setRentArea(rentAreaAsString);

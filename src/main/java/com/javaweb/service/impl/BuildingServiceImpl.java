@@ -53,6 +53,14 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public BuildingEntity createOrUpdateBuilding(BuildingDTO buildingDTO) {
+        BuildingEntity existingBuilding = buildingRepository.findByName(buildingDTO.getName());
+        boolean isUpdating = buildingDTO.getId() != null;
+        boolean nameConflict = existingBuilding != null &&
+                (!isUpdating || !existingBuilding.getId().equals(buildingDTO.getId()));
+
+        if (nameConflict) {
+            throw new ValidateDataException("Oops! Building names must be unique – no duplicates allowed");
+        }
         BuildingEntity buildingEntity = buildingConverter.toBuildingEntity(buildingDTO);
         buildingRepository.save(buildingEntity);
         if (buildingEntity.getRentAreaEntities() != null){
