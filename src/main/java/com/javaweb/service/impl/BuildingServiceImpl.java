@@ -45,6 +45,10 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public BuildingEntity createOrUpdateBuilding(BuildingDTO buildingDTO) {
+        BuildingEntity buildingExist = buildingRepository.findByName(buildingDTO.getName());
+        if (buildingExist != null){
+            throw new ValidateDataException("Oops! Building names must be unique – no duplicates allowed.");
+        }
         BuildingEntity buildingEntity = buildingConverter.toBuildingEntity(buildingDTO);
         List<RentAreaEntity> rentAreaEntities = new ArrayList<>();
         String[] rentAreas = buildingDTO.getRentArea().split(",\\s*");

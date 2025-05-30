@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "building")
 public class BuildingEntity extends BaseEntity{
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
     @Column(name = "street")
     private String street;
