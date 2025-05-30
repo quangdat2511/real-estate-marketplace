@@ -291,7 +291,7 @@
         json['typeCode'] = typeCode;
         json['id'] = $('#id').val();
         ok = 1;
-        // validateDataBuilding(json);
+        validateDataBuilding(json);
         if (ok === 0){
             alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi tiếp tục.');
         }
