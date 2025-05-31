@@ -44,6 +44,11 @@
             <div class="col-xs-12">
                 <form:form class="form-horizontal" role="form" id="form-edit" action="/admin/building-edit" method="GET" modelAttribute="buildingEdit">
                     <div class="form-group">
+                        <div class="col-xs-offset-3 col-xs-9">
+                            <p style="color: red; font-style: italic; margin-top: 0;">Các trường có tiêu đề màu đỏ là bắt buộc</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-xs-3 control-label" >Tên tòa nhà</label>
                         <div class="col-xs-9">
                             <form:input class="form-control" path="name"/>
@@ -334,7 +339,12 @@
                 window.location.href = "/admin/building-list";
             },
             error: function(response){
-                alert(response.message);
+                const res = response.responseJSON;
+                if (Array.isArray(res.data)) {
+                    alert(res.data.join('\n'));
+                } else {
+                    alert(res.message || "Something went wrong");
+                }
             }
         });
     }
@@ -350,7 +360,12 @@
                 window.location.href = "/admin/building-list";
             },
             error: function(response){
-                alert(response.message);
+                const res = response.responseJSON;
+                if (Array.isArray(res.data)) {
+                    alert(res.data.join('\n'));
+                } else {
+                    alert(res.message || "Something went wrong");
+                }
             }
         });
     }
