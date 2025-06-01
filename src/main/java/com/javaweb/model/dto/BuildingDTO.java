@@ -45,6 +45,7 @@ public class BuildingDTO extends AbstractDTO{
     private String managerPhoneNumber;
     @Size(min = 1, message = "Building type is required")
     private List<String> typeCode;
+    @NotBlank(message = "rentArea must not be blank")
     private String rentArea;
     private Map<String,String> buildingDTOs = new HashMap<>();
 

@@ -33,8 +33,6 @@ public class BuildingServiceImpl implements BuildingService {
     @Autowired
     private BuildingConverter buildingConverter;
     @Autowired
-    private RentAreaRepository rentAreaRepository;
-    @Autowired
     private UserRepository userRepository;
     @Autowired
     private UploadFileUtils uploadFileUtils;
@@ -45,20 +43,15 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public BuildingEntity createOrUpdateBuilding(BuildingDTO buildingDTO) {
-        BuildingEntity buildingExist = buildingRepository.findByName(buildingDTO.getName());
-        if (buildingExist != null){
-            throw new ValidateDataException("Oops! Building names must be unique – no duplicates allowed.");
+        BuildingEntity existingBuilding = buildingRepository.findByName(buildingDTO.getName());
+        boolean isUpdating = buildingDTO.getId() != null;
+        boolean nameConflict = existingBuilding != null &&
+                (!isUpdating || !existingBuilding.getId().equals(buildingDTO.getId()));
+
+        if (nameConflict) {
+            throw new ValidateDataException("Oops! Building names must be unique – no duplicates allowed");
         }
         BuildingEntity buildingEntity = buildingConverter.toBuildingEntity(buildingDTO);
-        List<RentAreaEntity> rentAreaEntities = new ArrayList<>();
-        String[] rentAreas = buildingDTO.getRentArea().split(",\\s*");
-        for (String rentArea : rentAreas) {
-            RentAreaEntity rentAreaEntity = new RentAreaEntity();
-            rentAreaEntity.setBuildingEntity(buildingEntity);
-            rentAreaEntity.setValue(Long.parseLong(rentArea));
-            rentAreaEntities.add(rentAreaEntity);
-        }
-        buildingEntity.setRentAreaEntities(rentAreaEntities);
         saveThumbnail(buildingDTO, buildingEntity);
         buildingRepository.save(buildingEntity);
         return buildingEntity;

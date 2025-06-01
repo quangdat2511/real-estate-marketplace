@@ -238,11 +238,11 @@
                         <label class="col-xs-3 control-label"></label>
                         <div class="col-xs-9">
                                 <c:choose>
-                                    <ac:when test="${not empty buildingEdit.id}">
+                                    <c:when test="${not empty buildingEdit.id}">
                                         <button type="button" class="btn btn-warning" id="btnAddOrUpdateBuilding">
                                             Cập nhật thông tin
                                         </button>
-                                    </ac:when>
+                                    </c:when>
                                     <c:otherwise>
                                         <button type="button" class="btn btn-primary" id="btnAddOrUpdateBuilding">
                                             Thêm tòa nhà
@@ -314,7 +314,7 @@
         json['typeCode'] = typeCode;
         json['id'] = $('#id').val();
         ok = 1;
-        validateDataBuilding(json);
+        // validateDataBuilding(json);
         if (ok === 0){
             alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi tiếp tục.');
         }
