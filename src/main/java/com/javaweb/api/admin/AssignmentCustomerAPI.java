@@ -1,8 +1,7 @@
 package com.javaweb.api.admin;
-
-import com.javaweb.model.dto.AssignmentBuildingDTO;
+import com.javaweb.model.dto.AssignmentCustomerDTO;
 import com.javaweb.model.response.ResponseDTO;
-import com.javaweb.service.AssignmentBuildingService;
+import com.javaweb.service.AssignmentCustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,27 +10,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/assign/buildings")
-public class AssignmentBuildingAPI {
+@RequestMapping("/api/assign/customers")
+public class AssignmentCustomerAPI {
     @Autowired
-    private AssignmentBuildingService assignmentBuildingService;
+    private AssignmentCustomerService assignmentCustomerService;
 
     @PostMapping
-    public ResponseEntity<?> updateAssignmentBuilding(@RequestBody AssignmentBuildingDTO assignmentBuildingDTO) {
+    public ResponseEntity<?> updateAssignmentBuilding(@RequestBody AssignmentCustomerDTO assignmentCustomerDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
 
         // Validate buildingId
-        if (assignmentBuildingDTO.getBuildingId() == null) {
-            responseDTO.setMessage("Building ID cannot be null");
+        if (assignmentCustomerDTO.getCustomerId() == null) {
+            responseDTO.setMessage("Customer ID cannot be null");
             return ResponseEntity.badRequest().body(responseDTO);
         }
 
 
         // Call the service method
-        assignmentBuildingService.updateAssignmentBuilding(assignmentBuildingDTO);
+        assignmentCustomerService.updateAssignmentCustomer(assignmentCustomerDTO);
 
-        responseDTO.setMessage("Assignment building updated successfully");
-        responseDTO.setData(assignmentBuildingDTO);
+        responseDTO.setMessage("Assignment customer updated successfully");
+        responseDTO.setData(assignmentCustomerDTO);
 
         return ResponseEntity.ok().body(responseDTO);
     }

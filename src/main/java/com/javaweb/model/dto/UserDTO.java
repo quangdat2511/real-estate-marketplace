@@ -1,13 +1,19 @@
 package com.javaweb.model.dto;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class UserDTO extends AbstractDTO {
+    @NotBlank(message = "Tên đăng nhập không được để trống")
     private String userName;
+
+    @NotBlank(message = "Họ tên không được để trống")
     private String fullName;
+
+    @NotBlank(message = "Mật khẩu không được để trống")
     private String password;
     private Integer status;
     private List<RoleDTO> roles = new ArrayList<>();

@@ -159,13 +159,15 @@
 <%--                                                    <input type="text" class="form-control" name="managerPhone" value="${modelSearch.managerPhoneNumber}">--%>
                                                     <form:input class="form-control" path="managerPhone"/>
                                                 </div>
-                                                <div class="col-xs-2">
-                                                    <label>Chọn nhân viên</label>
-                                                    <form:select path="staffId" class="form-control">
-                                                        <form:option value="">---Chọn nhân viên---</form:option>
-                                                        <form:options items="${staffs}"/>
-                                                    </form:select>
-                                                </div>
+                                                <security:authorize access="hasRole('MANAGER')">
+                                                    <div class="col-xs-2">
+                                                        <label>Chọn nhân viên</label>
+                                                        <form:select path="staffId" class="form-control">
+                                                            <form:option value="">---Chọn nhân viên---</form:option>
+                                                            <form:options items="${staffs}"/>
+                                                        </form:select>
+                                                    </div>
+                                                </security:authorize>
                                             </div>
                                         </div>
 
@@ -204,14 +206,15 @@
                                 </svg>
                             </button>
                         </a>
-
-                        <button class="btn btn-app btn-danger btn-xs" title="Xóa tòa nhà" id="btnDeleteBuilding">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-building-dash" viewBox="0 0 16 16">
-                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"/>
-                                <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
-                                <path d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
-                            </svg>
-                        </button>
+                        <security:authorize access="hasRole('MANAGER')">
+                            <button class="btn btn-app btn-danger btn-xs" title="Xóa tòa nhà" id="btnDeleteBuilding">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-building-dash" viewBox="0 0 16 16">
+                                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"/>
+                                    <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
+                                    <path d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                                </svg>
+                            </button>
+                        </security:authorize>
                     </div>
                 </div><!-- /.span -->
             </div>
@@ -219,14 +222,24 @@
             <!-- Table list building -->
             <div class="row">
                 <div class="col-xs-12">
-                    <display:table name="${buildingSearchResponses.listResult}" cellspacing="0" cellpadding="0"
+                    <display:table name="${buildingSearchResponses.listResult}" htmlId="buildingList" cellspacing="0" cellpadding="0"
                            requestURI="/admin/building-list" partialList="true" sort="external"
                            size="${buildingSearchResponses.totalItems}" defaultsort="2" defaultorder="ascending"
                            id="tableList" pagesize="${buildingSearchResponses.maxPageItems}"
                            export="false"
                            class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
                            style="margin: 3em 0 1.5em;">
+
+
                             <display:column title="" escapeXml="false"><span class="hidden-id" data-id="${tableList.id}"></span></display:column>
+                            <security:authorize access="hasRole('MANAGER')">
+                                <display:column title="" escapeXml="false" headerClass="center" class="center">
+                                    <label class="pos-rel">
+                                        <input type="checkbox" class="ace" value="${tableList.id}">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </display:column>
+                            </security:authorize>
                             <display:column headerClass="text-left" property="name" title="Tên"/>
                             <display:column headerClass="text-left" property="address" title="Địa chỉ"/>
                             <display:column headerClass="text-left" property="numberOfBasement" title="Số tầng hầm"/>
@@ -240,15 +253,19 @@
                             <display:column headerClass="text-left" property="brokerageFee" title="Phí môi giới"/>
                             <display:column headerClass="col-actions" title="Thao tác">
                             <div class="hidden-sm hidden-xs btn-group">
-                                <button class="btn btn-xs btn-success" onclick="assigmentBuilding(${tableList.id})" title="Giao tòa nhà">
-                                    <i class="ace-icon fa fa-users bigger-120"></i>
-                                </button>
+                                <security:authorize access="hasRole('MANAGER')">
+                                    <button class="btn btn-xs btn-success" onclick="assigmentBuilding(${tableList.id})" title="Giao tòa nhà">
+                                        <i class="ace-icon fa fa-users bigger-120"></i>
+                                    </button>
+                                </security:authorize>
                                 <a href="/admin/building-edit-${tableList.id}" class="btn btn-xs btn-info" title="Sửa thông tin">
                                         <i class="ace-icon fa fa-pencil bigger-120"></i>
                                 </a>
-                                <button class="btn btn-xs btn-danger" title="xóa tòa nhà">
-                                    <i class="ace-icon fa fa-trash-o bigger-120" onclick="deleteBuilding(${tableList.id})"></i>
-                                </button>
+                                <security:authorize access="hasRole('MANAGER')">
+                                    <button class="btn btn-xs btn-danger" title="xóa tòa nhà">
+                                        <i class="ace-icon fa fa-trash-o bigger-120" onclick="deleteBuilding(${tableList.id})"></i>
+                                    </button>
+                                </security:authorize>
                             </div>
                            </display:column>
                     </display:table>
@@ -400,7 +417,7 @@
                 // Gui request xuong server
                 $.ajax({
                     type : "POST",
-                    url: "/api/assign",
+                    url: "/api/assign/buildings",
                     data: JSON.stringify(json),
                     dataType: "json",
                     contentType: "application/json",

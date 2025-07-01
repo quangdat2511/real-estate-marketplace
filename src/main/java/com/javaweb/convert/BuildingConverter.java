@@ -35,6 +35,11 @@ public class BuildingConverter {
             buildingEntityNew.setStaffs(buildingEntityOld.getStaffs());
             buildingEntityNew.setCreatedDate(buildingEntityOld.getCreatedDate());
             buildingEntityNew.setCreatedBy(buildingEntityOld.getCreatedBy());
+            buildingEntityNew.setImage(buildingEntityOld.getImage());
+        }
+        else{
+            buildingEntityNew.setModifiedBy(null);
+            buildingEntityNew.setModifiedDate(null);
         }
         List<RentAreaEntity> rentAreaEntities = new ArrayList<>();
         String[] rentAreas = buildingDTO.getRentArea().split(",\\s*");
@@ -71,6 +76,9 @@ public class BuildingConverter {
         String rentAreaAsString = buildingEntity.getRentAreaEntities().stream().map(rentArea -> String.valueOf(rentArea.getValue())).collect(Collectors.joining(", "));
         buildingDTO.setRentArea(rentAreaAsString);
         buildingDTO.setTypeCode(Arrays.asList(buildingEntity.getType().split(",\\s*")));
+        if (buildingEntity.getImage() != null){
+            buildingDTO.setImage(buildingEntity.getImage());
+        }
         return buildingDTO;
     }
 }

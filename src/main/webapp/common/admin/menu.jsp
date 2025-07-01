@@ -58,24 +58,47 @@
             </ul>
         </li>
     </ul>
-    <ul class="nav nav-list">
+        <ul class="nav nav-list">
         <li class="">
             <a href="#" class="dropdown-toggle">
-                <i class="menu-icon fa fas fa-users"></i>
-                <span class="menu-text">Quản Lý Tài Khoản</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-building-fill" viewBox="0 0 16 16">
+                    <path d="M3 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3v-3.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V16h3a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm1 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
+                </svg>
+                <span class="menu-text">Quản Lý Khách Hàng</span>
             </a>
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href='/admin/user-list'>
+                    <a href='/admin/customer-list'>
                         <i class="menu-icon fa fa-caret-right"></i>
-                        Danh sách tài khoản
+                        Danh sách khách hàng
                     </a>
                     <b class="arrow"></b>
                 </li>
             </ul>
         </li>
     </ul>
+    <security:authorize access="hasRole('MANAGER')">
+        <ul class="nav nav-list">
+            <li class="">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa fas fa-users"></i>
+                    <span class="menu-text">Quản Lý Tài Khoản</span>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <li class="">
+                        <a href='/admin/user-list'>
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            Danh sách tài khoản
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </security:authorize>
+
     <div class="sidebar-toggle sidebar-collapse">
         <i class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
     </div>

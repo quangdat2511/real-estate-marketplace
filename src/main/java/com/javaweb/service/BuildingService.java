@@ -15,4 +15,5 @@ public interface BuildingService {
     String delete(List<Long> ids);
     List<StaffResponseDTO> getStaffByBuildingId(Long id);
     int countTotalItems(BuildingSearchRequest buildingSearchRequest);
+    boolean checkAssignedStaff(Long buildingId, Long staffId);
 }

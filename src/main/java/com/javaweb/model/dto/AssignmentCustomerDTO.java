@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class AssignmentBuildingDTO {
-    private Long buildingId;
+public class AssignmentCustomerDTO {
+    private Long customerId;
     private List<Long> staffIds;
 }

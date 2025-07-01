@@ -4,6 +4,7 @@ import com.javaweb.security.CustomSuccessHandler;
 import com.javaweb.service.impl.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,7 +45,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
                 http.csrf().disable()
                 .authorizeRequests()
-                        //.antMatchers("/admin/building-edit").hasAnyRole("MANAGER")
+                        .antMatchers(HttpMethod.DELETE, "/api/buildings/{ids}").hasRole("MANAGER")
+                        .antMatchers(HttpMethod.DELETE, "/api/customers/{ids}").hasRole("MANAGER")
+                        .antMatchers(HttpMethod.DELETE, "/api/transactions/{ids}").hasRole("MANAGER")
+                        .antMatchers("/api/customers/*/staffs").hasRole("MANAGER")
+                        .antMatchers("/api/buildings/*/staffs").hasRole("MANAGER")
+                        .antMatchers("/api/assign/**").hasRole("MANAGER")
+                        .antMatchers("api/user", "api/user/**").hasRole("MANAGER")
+                        .antMatchers("admin/user-list", "admin/user-edit", "admin/user-edit-{id}", "/admin/profile-{username}", "/admin/profile-password").hasRole("MANAGER")
+                        .antMatchers("/api/buildings/{id}/staffs").hasRole("MANAGER")
+                        .antMatchers("api/customers", "api/customers/**").hasAnyRole("MANAGER", "STAFF")
+                        .antMatchers("api/transactions", "api/transactions/**").hasAnyRole("MANAGER", "STAFF")
+                        .antMatchers("api/buildings", "api/buildings/**").hasAnyRole("MANAGER", "STAFF")
                         .antMatchers("/admin/**").hasAnyRole("MANAGER","STAFF")
                         .antMatchers("/login", "/resource/**", "/trang-chu", "/api/**").permitAll()
                 .and()

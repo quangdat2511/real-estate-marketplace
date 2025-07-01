@@ -1,4 +1,4 @@
-package com.javaweb.util;
+package com.javaweb.utils;
 
 public class StringUtils {
 	public static boolean isNotBlank(String value) {

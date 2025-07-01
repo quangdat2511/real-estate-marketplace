@@ -23,4 +23,5 @@ public interface UserService {
     List<UserDTO> getAllUsers(Pageable pageable);
     Map<Long, String> getStaffs();
     int countTotalItems();
+    boolean existsByUserName(String userName);
 }

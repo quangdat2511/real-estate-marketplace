@@ -10,12 +10,15 @@ import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.dto.UserDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
+import com.javaweb.security.utils.SecurityUtils;
 import com.javaweb.service.BuildingService;
 import com.javaweb.service.UserService;
 import com.javaweb.utils.DisplayTagUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +44,10 @@ public class BuildingController {
         modelAndView.addObject("type", RentType.getType());
         //Project2...
         DisplayTagUtils.of(request, buildingSearchRequest);
+        if (SecurityUtils.getAuthorities().contains(SystemConstant.ADMIN_ROLE)){
+            Long staffId = SecurityUtils.getPrincipal().getId();
+            buildingSearchRequest.setStaffId(staffId);
+        }
         List<BuildingSearchResponse> buildingSearchResponses = buildingService.getAllBuildings(buildingSearchRequest);
         buildingSearchRequest.setListResult(buildingSearchResponses);
         buildingSearchRequest.setTotalItems(buildingService.countTotalItems(buildingSearchRequest));
@@ -57,11 +64,18 @@ public class BuildingController {
         return modelAndView;
     }
     @GetMapping("/admin/building-edit-{id}")
-    public ModelAndView updateBuilding(@PathVariable Long id){
+    public ModelAndView updateBuilding(@PathVariable Long id, Model model){
         ModelAndView modelAndView = new ModelAndView("admin/building/edit");
         //findById dưới service và convert qua DTO
         BuildingDTO buildingDTO = buildingService.findById(id);
         modelAndView.addObject("buildingEdit", buildingDTO);
+        if (SecurityUtils.getAuthorities().contains(SystemConstant.ADMIN_ROLE)){
+            Long staffId = SecurityUtils.getPrincipal().getId();
+            if (!buildingService.checkAssignedStaff(id, staffId)){
+                modelAndView.setViewName("/error/404");
+                return modelAndView;
+            }
+        }
         modelAndView.addObject("district", District.getDistrict());
         modelAndView.addObject("type", RentType.getType());
         return modelAndView;

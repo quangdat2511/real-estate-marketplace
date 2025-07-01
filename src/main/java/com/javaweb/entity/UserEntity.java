@@ -45,4 +45,7 @@ public class UserEntity extends BaseEntity {
     @ManyToMany(mappedBy = "staffs")
     @JsonBackReference
     private List<BuildingEntity> buildingEntities;
+    @ManyToMany(mappedBy =  "staffs")
+    @JsonBackReference
+    private List<CustomerEntity> customerEntities;
 }

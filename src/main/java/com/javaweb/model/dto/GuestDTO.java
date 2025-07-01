@@ -8,15 +8,10 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-public class CustomerDTO extends AbstractDTO{
+public class GuestDTO extends AbstractDTO{
     @NotBlank(message = "fullName must not be blank")
     private String fullName;
     @NotBlank(message = "phone must not be blank")
     private String phone;
     private String email;
-    private String companyName;
-    @NotBlank(message = "demand must not be blank")
-    private String demand;
-    @NotBlank(message = "status must not be blank")
-    private String status;
 }

@@ -116,18 +116,20 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <h2 class="title-lienhe"><strong>Liên hệ với chúng tôi</strong></h2>
-                    <form>
+                    <form id="form-edit">
                         <div class="row">
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Họ và tên">
+                                <input type="text" class="form-control" placeholder="Họ và tên" name="fullName">
+                                <span class="error-message" style="color:red" id="fullNameError"></span>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Email">
+                                <input type="text" class="form-control" placeholder="Email" name = "email">
                             </div>
                         </div>
-                        <input type="text" class="form-control mt-3" placeholder="Số điện thoại">
-                        <input type="text" class="form-control mt-3" placeholder="Nội dung">
-                        <button class="btn btn-primary px-4 mt-3">
+                        <input type="text" class="form-control mt-3" placeholder="Số điện thoại" name="phone">
+                        <span class="error-message" style="color:red" id="phoneError"></span>
+                        <input type="text" class="form-control mt-3" placeholder="Nội dung" name="demand">
+                        <button class="btn btn-primary px-4 mt-3" id= "btnAddGuest">
                             Gửi liên hệ
                         </button>
                     </form>
@@ -233,7 +235,56 @@
         </div>
     </footer>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script>
+    var ok = 1;
+    function validateDataGuest(json){
+        $('.error-message').html('');
+        if (json['fullName'] === '') {
+            ok = 0;
+            $('#fullNameError').html('Họ tên không được trống')
+        }
+        if (json['phone'] === '') {
+            ok = 0;
+            $('#phoneError').html('Số điện thoại không được trống')
+        }
+    }
+    $('#btnAddGuest').click(function(e){
+        e.preventDefault();
+        var formData = $('#form-edit').serializeArray();
+        var json = {};
+        $.each(formData, function(i, it){
+            json["" + it.name + ""] = it.value;
+        })
+        ok = 1;
+        validateDataGuest(json);
+        if (ok === 0)
+            alert('Vui lòng điền đầy đủ các trường bắt buộc trước khi tiếp tục.');
+        else
+            addGuest(json);
+    });
+    function addGuest(json){
+        $.ajax({
+            type : "POST",
+            url: "/api/guests",
+            data: JSON.stringify(json),
+            dataType: "json",
+            contentType : "application/json",
+            success: function(response){
+                alert(response.message);
+            },
+            error: function(response){
+                const res = response.responseJSON;
+                if (Array.isArray(res.data)) {
+                    alert(res.data.join('\n'));
+                } else {
+                    alert(res.message || "Something went wrong");
+                }
+            }
+        });
+    }
+</script>
 </body>
 </html>

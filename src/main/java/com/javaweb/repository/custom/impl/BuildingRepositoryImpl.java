@@ -3,7 +3,7 @@ package com.javaweb.repository.custom.impl;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;
-import com.javaweb.util.StringUtils;
+import com.javaweb.utils.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;

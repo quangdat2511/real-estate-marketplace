@@ -69,7 +69,6 @@ public class BuildingServiceImpl implements BuildingService {
         if (buildingEntities.size() != ids.size()){
             throw new ValidateDataException("One or more building IDs are invalid!");
         }
-        buildingEntities.forEach(building -> building.getStaffs().clear());
         buildingRepository.deleteAllByIdIn(ids);
         return "success";
     }
@@ -122,5 +121,11 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public int countTotalItems(BuildingSearchRequest buildingSearchRequest) {
         return buildingRepository.countTotalItem(buildingSearchRequest);
+    }
+
+    @Override
+    public boolean checkAssignedStaff(Long buildingId, Long staffId) {
+        BuildingEntity buildingEntity = buildingRepository.findById(buildingId).get();
+        return buildingEntity.getStaffs().stream().anyMatch(staff -> staff.getId().equals(staffId));
     }
 }

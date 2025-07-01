@@ -1,14 +1,15 @@
 package com.javaweb.controller.web;
 
+import com.javaweb.model.dto.UserDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
+import com.javaweb.service.UserService;
 import com.javaweb.utils.DistrictCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +18,10 @@ import javax.servlet.http.HttpSession;
 
 @Controller(value = "homeControllerOfWeb")
 public class HomeController {
+    @Autowired
+    private UserService userService;
 
-	@RequestMapping(value = "/trang-chu", method = RequestMethod.GET)
+    @RequestMapping(value = "/trang-chu", method = RequestMethod.GET)
 	public ModelAndView homePage(BuildingSearchRequest buildingSearchRequest, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("web/home");
         mav.addObject("modelSearch", buildingSearchRequest);
@@ -55,7 +58,11 @@ public class HomeController {
 		ModelAndView mav = new ModelAndView("login");
 		return mav;
 	}
-
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public ModelAndView register() {
+        ModelAndView mav = new ModelAndView("register");
+        return mav;
+    }
 	@RequestMapping(value = "/access-denied", method = RequestMethod.GET)
 	public ModelAndView accessDenied() {
 		return new ModelAndView("redirect:/login?accessDenied");

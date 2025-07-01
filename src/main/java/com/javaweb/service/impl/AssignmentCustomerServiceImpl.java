@@ -1,35 +1,37 @@
 package com.javaweb.service.impl;
 
 import com.javaweb.entity.BuildingEntity;
+import com.javaweb.entity.CustomerEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.ValidateDataException;
 import com.javaweb.model.dto.AssignmentBuildingDTO;
+import com.javaweb.model.dto.AssignmentCustomerDTO;
 import com.javaweb.repository.BuildingRepository;
+import com.javaweb.repository.CustomerRepository;
 import com.javaweb.repository.UserRepository;
-import com.javaweb.service.AssignmentBuildingService;
+import com.javaweb.service.AssignmentCustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Objects;
 
 @Service
 @Transactional
-public class AssignmentBuildingServiceImpl implements AssignmentBuildingService {
+public class AssignmentCustomerServiceImpl implements AssignmentCustomerService {
     @Autowired
-    private BuildingRepository buildingRepository;
+    private CustomerRepository customerRepository;
     @Autowired
     private UserRepository userRepository;
-
     @Override
-    public void updateAssignmentBuilding(AssignmentBuildingDTO assignmentBuildingDTO) {
-        // Find the building entity or throw an exception if not found
-        BuildingEntity buildingEntity = buildingRepository.findById(assignmentBuildingDTO.getBuildingId())
-                .orElseThrow(() -> new ValidateDataException("Building is not found!"));;
-        List<Long> staffIds = assignmentBuildingDTO.getStaffIds();
-        buildingEntity.getStaffs().clear();
+    public void updateAssignmentCustomer(AssignmentCustomerDTO assignmentCustomerDTO) {
+        CustomerEntity customerEntity = customerRepository.findById(assignmentCustomerDTO.getCustomerId())
+                .orElseThrow(() -> new ValidateDataException("Customer is not found!"));;
+        List<Long> staffIds = assignmentCustomerDTO.getStaffIds();
+        customerEntity.getStaffs().clear();
         if (staffIds == null || staffIds.isEmpty()) {
-            buildingRepository.save(buildingEntity);
+            customerRepository.save(customerEntity);
             return;
         }
         if (staffIds.stream().anyMatch(Objects::isNull)) {
@@ -39,7 +41,7 @@ public class AssignmentBuildingServiceImpl implements AssignmentBuildingService 
         if (staffs.size() != staffIds.size()) {
             throw new ValidateDataException((staffIds.size() - staffs.size()) +  " staff ID(s) are invalid!");
         }
-        buildingEntity.setStaffs(staffs);
-        buildingRepository.save(buildingEntity);
+        customerEntity.setStaffs(staffs);
+        customerRepository.save(customerEntity);
     }
 }
