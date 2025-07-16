@@ -2,6 +2,7 @@ package com.javaweb.service.impl;
 
 import com.javaweb.convert.TransactionConverter;
 import com.javaweb.entity.TransactionEntity;
+import com.javaweb.enums.Status;
 import com.javaweb.exception.ValidateDataException;
 import com.javaweb.model.dto.TransactionDTO;
 import com.javaweb.repository.TransactionRepository;
@@ -22,6 +23,8 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionConverter transactionConverter;
     @Override
     public TransactionEntity createOrUpdateTransaction(TransactionDTO transactionDTO) {
+        if (Status.getStatusName(transactionDTO.getCode()) == null)
+            throw new ValidateDataException("Invalid transaction code");
         TransactionEntity transactionEntity = transactionConverter.toTransactionEntity(transactionDTO);
         transactionRepository.save(transactionEntity);
         return transactionEntity;

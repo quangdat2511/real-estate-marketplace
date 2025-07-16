@@ -142,7 +142,7 @@
 
                         <tbody>
                             <c:forEach var="transaction" items="${CSKH}">
-                                <tr id="transaction-row-${transaction.id}">
+                                <tr id="cskh-row-${transaction.id}">
 
                                     <td>${transaction.createdDate}</td>
                                     <td>${transaction.createdBy}</td>
@@ -194,7 +194,7 @@
 
                         <tbody>
                             <c:forEach var="transaction" items="${DDX}">
-                                <tr id="transaction-row-${transaction.id}">
+                                <tr id="ddx-row-${transaction.id}">
 
                                     <td>${transaction.createdDate}</td>
                                     <td>${transaction.createdBy}</td>
@@ -269,7 +269,7 @@
         }
     }
 
-    $('#btnAddOrUpdateCustomer').click(function(){
+    $('#btnAddOrUpdateCustomer').click(function(e){
         e.preventDefault();
         var formData = $('#form-edit').serializeArray();
         var json = {};

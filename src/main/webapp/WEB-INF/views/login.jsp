@@ -35,27 +35,27 @@
 									<div class="card text-white" style="border-radius: 1rem; background-color: #35bf76;">
 										<div class="card-body p-5">
 											<div class="mb-md-5 mt-md-4 pb-5 text-center">
-												<h2 class="fw-bold mb-2 text-uppercase">Login</h2>
-												<p class="text-white-50 mb-5">Please enter your login and password!</p>
+												<h2 class="fw-bold mb-2 text-uppercase">Đăng nhập</h2>
+												<p class="text-white-50 mb-5">Hãy nhập tên đăng nhập và mật khẩu!</p>
 												<form action="j_spring_security_check" id="formLogin" method="post">
 												<div class="form-outline form-white mb-4">
-													<label class="form-label" for="userName">Email</label>
+													<label class="form-label" for="userName">Tên đăng nhập</label>
 													<input type="text" class="form-control" id="userName" name="j_username" placeholder="Tên đăng nhập">
 												</div>
 
 												<div class="form-outline form-white mb-4">
-													<label class="form-label" for="password">Password</label>
+													<label class="form-label" for="password">Mật khẩu</label>
 													<input type="password" class="form-control" id="password" name="j_password" placeholder="Mật khẩu">
 												</div>
 
-												<div class="form-check d-flex justify-content-center mb-5">
-													<div><input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" /></div>
-													<div><label class="form-check-label">
-                                                        Remember Password
-                                                    </label></div>
-												</div>
+<%--												<div class="form-check d-flex justify-content-center mb-5">--%>
+<%--													<div><input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" /></div>--%>
+<%--													<div><label class="form-check-label">--%>
+<%--                                                        Ghi nhớ mật khẩu--%>
+<%--                                                    </label></div>--%>
+<%--												</div>--%>
 
-												<p class="small mb-2 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>
+<%--												<p class="small mb-2 pb-lg-2"><a class="text-white-50" href="#!">Quên mật khẩu?</a></p>--%>
 
 												<button type="submit" class="btn btn-primary" >Đăng nhập</button>
 												</form>
@@ -66,7 +66,7 @@
 												</div>
 											</div>
 											<div class="text-center">
-												<p class="mb-0 tex-center account">Don't have an account? <a href="register" class="text-white-50 fw-bold">Sign Up</a></p>
+												<p class="mb-0 tex-center account">Chưa có tài khoản? <a href="register" class="text-white-50 fw-bold">Đăng ký</a></p>
 											</div>
 
 										</div>

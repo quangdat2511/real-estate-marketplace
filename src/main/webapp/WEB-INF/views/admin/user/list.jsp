@@ -144,16 +144,19 @@
                                         <display:column headerClass="text-left" property="userName" title="Tên"/>
                                         <display:column headerClass="text-left" property="fullName" title="full name"/>
                                         <display:column headerClass="col-actions" title="Thao tác">
-                                            <c:if test="${tableList.roleCode != 'MANAGER'}">
+                                        <security:authorize access="hasRole('MANAGER')">
+<%--                                            <c:if test="${tableList.roleCode != 'MANAGER'}">--%>
                                                 <a class="btn btn-sm btn-primary btn-edit" data-toggle="tooltip"
                                                    title="Cập nhật người dùng"
                                                    href='<c:url value="/admin/user-edit-${tableList.id}"/>'>
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
-                                            </c:if>
-                                            <c:if test="${tableList.roleCode == 'MANAGER'}">
-                                                <p>Không đươc thao tác</p>
-                                            </c:if>
+<%--                                            </c:if>--%>
+                                        </security:authorize>
+                                            
+<%--                                            <c:if test="${tableList.roleCode == 'MANAGER'}">--%>
+<%--                                                <p>Không đươc thao tác</p>--%>
+<%--                                            </c:if>--%>
                                         </display:column>
                                     </display:table>
                                 </div>

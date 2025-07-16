@@ -19,29 +19,29 @@
                                     <div class="card-body p-5">
                                         <div class="mb-md-5 mt-md-4 pb-5 text-center">
                                             <h2 class="fw-bold mb-2 text-uppercase">ĐĂNG KÍ</h2>
-                                            <p class="text-white-50 mb-5">Please enter your login and password!</p>
+                                            <p class="text-white-50 mb-5">Vui lòng nhập thông tin để đăng ký tài khoản!</p>
 
                                             <form id="formRegister">
                                                 <div class="form-outline form-white mb-4">
-                                                    <label class="form-label" for="fullName">FullName</label>
+                                                    <label class="form-label" for="fullName">Họ và tên</label>
                                                     <input type="text" id="fullName" name="fullName" class="form-control" required>
                                                     <span class="error-message text-warning" style="color:red;" id="fullNameError"></span>
                                                 </div>
 
                                                 <div class="form-outline form-white mb-4">
-                                                    <label class="form-label" for="userName">UserName</label>
+                                                    <label class="form-label" for="userName">Tên đăng nhập</label>
                                                     <input type="text" id="userName" name="userName" class="form-control" required>
                                                     <span class="error-message text-warning" style="color:red;" id="userNameError"></span>
                                                 </div>
 
                                                 <div class="form-outline form-white mb-4">
-                                                    <label class="form-label" for="password">Password</label>
+                                                    <label class="form-label" for="password">Mật khẩu</label>
                                                     <input type="password" id="password" name="password" class="form-control" required>
                                                     <span class="error-message text-warning" style="color:red;" id="passwordError"></span>
                                                 </div>
 
                                                 <div class="form-outline form-white mb-4">
-                                                    <label class="form-label" for="retypePassword">RetypePassword</label>
+                                                    <label class="form-label" for="retypePassword">Nhập lại mật khẩu</label>
                                                     <input type="password" id="retypePassword" name="retypePassword" class="form-control" required>
                                                     <span class="error-message text-warning" style="color:red;" id="retypePasswordError"></span>
                                                 </div>
